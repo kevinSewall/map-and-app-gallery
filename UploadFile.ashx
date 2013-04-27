@@ -33,6 +33,14 @@ public class UploadFile : IHttpHandler {
         {
             try
             {
+                // From http://dojotoolkit.org/reference-guide/1.8/dojox/form/Uploader.html,
+                // Server Side Code PHP section
+                //     [The server-side upload handler] is expecting one of four things:
+                //     1. A file or files from Flash (uploadedfilesFlash)
+                //     2. A file from HTML (uploadedfiles0)
+                //     3. Multiple files from HTML (uploadedfiles0, uploadedfiles1, etc)
+                //     4. A file array from HTML5 (uploadedfiles[])
+                // We have a simplification: we only upload a single file
                 fileKey = context.Request.Files.Keys[0];
                 uploader = "Form";
                 if(fileKey.EndsWith("s[]")) uploader = "HTML5";
@@ -58,8 +66,8 @@ public class UploadFile : IHttpHandler {
         }
 
         // Provide the expected response
-
         // http://dojotoolkit.org/reference-guide/dojox/form/Uploader.html
+        // 4/26/13: HTML5 uploader not handling response; will force all uploads to use iframe in calling program
         if("Flash" == uploader)
         {
             // Response to Flash uploader

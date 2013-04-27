@@ -14,80 +14,77 @@
  | See the License for the specific language governing permissions and
  | limitations under the License.
  */
-dojo.provide('local.modules.MapsAppsTile');
+define(["dojo/_base/declare", "dijit/_WidgetBase", "dijit/_Templated"], function (declare, _WidgetBase, _TemplatedMixin) {
+    return declare([_WidgetBase, _TemplatedMixin], {
+        id: "",
+        titleLine: "title",
+        author: "author",
+        shortDesc: "description",
+        readMoreOnClickHandler: "",
+        tryItURL: "",
+        thumbnailURL: "",
 
-dojo.require("dijit._Widget");
-dojo.require("dijit._Templated");
+        baseClass: "mapsAppsTile",
+        fullTitle: "",
+        fullAuthor: "",
 
-dojo.declare('local.modules.MapsAppsTile', [dijit._Widget, dijit._Templated],{
-    id: "",
-    titleLine: "title",
-    author: "author",
-    shortDesc: "description",
-    readMoreOnClickHandler: "",
-    tryItURL: "",
-    thumbnailURL: "",
+        postMixInProperties: function(){
+            // Use the untrimmed titleLine for the hover title;
+            this.title = this.fullTitle = this.titleLine;
+            this.fullAuthor = this.author;
 
-    baseClass: "mapsAppsTile",
-    fullTitle: "",
-    fullAuthor: "",
+            // Trim some of the other content so that we stay within the gallery tiles
+            this.titleLine = this._ellipsify(this.titleLine, 25);
+            this.author = this._ellipsify(this.author, 25);
+            this.shortDesc = this._ellipsify(this.shortDesc, 120);
+        },
 
-    postMixInProperties: function(){
-        // Use the untrimmed titleLine for the hover title;
-        this.title = this.fullTitle = this.titleLine;
-        this.fullAuthor = this.author;
+        templateString:
+            "<span class='mapTileFrame mapTileSize columnPadRight columnPadBottom' data-dojo-type='dijit.layout.ContentPane'>" +
+            "    <div class='mapTileSize sideColumnBkgd roundedPageItem absoluteContainer'>" +
+            "        <div class='mapTileTitleBar titleBar'>" +
+            "            <span class='mapTileTitle'>${titleLine}</span>" +
+            "        </div>" +
+            "        <div class='mapTileImageFrame shadow'>" +
+            "            <a href='${tryItURL}' target='_blank' title='Try ${fullTitle}'>" +
+            "            <img class='mapTileImage' src='${thumbnailURL}'></a>" +
+            "        </div>" +
+            "        <div title='By ${fullAuthor}' class='mapTileAuthor'>By: ${author}</div>" +
+            "        <div class='mapTileSummary'>" +
+            "            ${shortDesc}<br>" +
+            "        </div>" +
+            "        <div title='More information about ${fullTitle}' class='mapTileReadMore sideColumnBkgd' onclick='${readMoreOnClickHandler}(\"${id}\")'>" +
+            "            Read more..." +
+            "        </div>" +
+            "    </div>" +
+            "</span>",
 
-        // Trim some of the other content so that we stay within the gallery tiles
-        this.titleLine = this._ellipsify(this.titleLine, 25);
-        this.author = this._ellipsify(this.author, 25);
-        this.shortDesc = this._ellipsify(this.shortDesc, 120);
-    },
-
-    templateString:
-        "<span class='mapTileFrame mapTileSize columnPadRight columnPadBottom' data-dojo-type='dijit.layout.ContentPane'>" +
-        "    <div class='mapTileSize sideColumnBkgd roundedPageItem absoluteContainer'>" +
-        "        <div class='mapTileTitleBar titleBar'>" +
-        "            <span class='mapTileTitle'>${titleLine}</span>" +
-        "        </div>" +
-        "        <div class='mapTileImageFrame shadow'>" +
-        "            <a href='${tryItURL}' target='_blank' title='Try ${fullTitle}'>" +
-        "            <img class='mapTileImage' src='${thumbnailURL}'></a>" +
-        "        </div>" +
-        "        <div title='By ${fullAuthor}' class='mapTileAuthor'>By: ${author}</div>" +
-        "        <div class='mapTileSummary'>" +
-        "            ${shortDesc}<br>" +
-        "        </div>" +
-        "        <div title='More information about ${fullTitle}' class='mapTileReadMore sideColumnBkgd' onclick='${readMoreOnClickHandler}(\"${id}\")'>" +
-        "            Read more..." +
-        "        </div>" +
-        "    </div>" +
-        "</span>",
-
-    _ellipsify: function(original, maxLength) {
-        // If string is within length restriction, simply return it
-        if(!original || original.length < maxLength+1)
-        {
-            return original;
-        }
-
-        // Otherwise, try to trim it on a space boundary
-        else if(" " == original[maxLength])
-        {
-            return original.substr(0, maxLength) + "...";
-        }
-        else
-        {
-            var iSpaceChar = original.lastIndexOf(" ", maxLength);
-            if(0 <= iSpaceChar)
+        _ellipsify: function(original, maxLength) {
+            // If string is within length restriction, simply return it
+            if(!original || original.length < maxLength+1)
             {
-                return original.substr(0, iSpaceChar) + "...";
+                return original;
+            }
+
+            // Otherwise, try to trim it on a space boundary
+            else if(" " == original[maxLength])
+            {
+                return original.substr(0, maxLength) + "...";
             }
             else
             {
-                // No space characters within length restriction, so just
-                // cut the string
-                return original.substr(0, maxLength) + "...";
+                var iSpaceChar = original.lastIndexOf(" ", maxLength);
+                if(0 <= iSpaceChar)
+                {
+                    return original.substr(0, iSpaceChar) + "...";
+                }
+                else
+                {
+                    // No space characters within length restriction, so just
+                    // cut the string
+                    return original.substr(0, maxLength) + "...";
+                }
             }
         }
-    }
+    });
 });
