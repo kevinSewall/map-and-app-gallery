@@ -251,7 +251,7 @@ than shifting the page 40px off the bottom. -->
                                         <div class="absoluteContainer fullHeight noPad">
                                             <div id="submissionFormFrame" data-dojo-type="dijit.layout.ContentPane">
                                                 <div id="submissionFormNotAvailable" class="absent">
-                                                At this time, the submission of maps and apps from the Opera, 64-bit Internet Explorer, or Internet Explorer &lt;8 browsers is not available.
+                                                At this time, the submission of maps and apps from the Opera, 64-bit Internet Explorer, or Internet Explorer &lt;9 browsers is not available.
                                                 </div>
                                                 <form class="fullWidth" data-dojo-type="dijit.form.Form" id="submissionForm" jsId="submissionForm"
                                                     enctype="multipart/form-data" method="post">
@@ -651,7 +651,7 @@ than shifting the page 40px off the bottom. -->
             ], function (ready, ArcGISSearchStore, MapsAppsTile) {
                 ready(function () {
                     disableThumbnailUpload = dojo.isOpera
-                        || (dojo.isIE && (dojo.isIE < 8 || "x64" == window.navigator.cpuClass));
+                        || (dojo.isIE && (dojo.isIE < 9 || "x64" == window.navigator.cpuClass));
                     MapsAppsTileConstructor = MapsAppsTile;
 
                     // Fetch the configuration information. We have two parallel tracks of initialization here:
