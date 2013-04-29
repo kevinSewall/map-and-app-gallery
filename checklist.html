@@ -25,7 +25,7 @@
     <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
     <meta http-equiv="pragma" content="no-cache" />
     <title>Checklist for Configuring the Map and App Gallery Application</title>
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dijit/themes/claro/claro.css"></link>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.3/dijit/themes/claro/claro.css"></link>
     <link rel="stylesheet" href="configuration/styles.css"></link>
     <style>
         .overallSite {font-family:Verdana,Arial,sans-serif;font-size:smaller}
@@ -136,15 +136,20 @@
 </div>
 
 <script>
-    djConfig = {
-        parseOnLoad: true,
-        isDebug: false,
-        cacheBust: (new Date()).getTime(),
-        baseUrl: "./",
-        modulePaths: {local: "./"}
-    }
+     var path_location = location.pathname.replace(/\/[^/]+$/, '');
+     var dojoConfig = {
+         packages: [{
+             name: "configuration",
+             location: path_location + '/configuration'
+         },{
+             name: "modules",
+             location: path_location + '/modules'
+         }],
+         async: false,
+         parseOnLoad: true
+     };
 </script>
-<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"></script>
 <script>
     var configData = null;
     var gallery = [];
@@ -153,18 +158,41 @@
 
     // Manage a "loading" indicator to hide dojo reworking of UI
     // We'll pull this part of dojo in quickly, then get the rest
-    dojo.require("dojo.window");
-    dojo.addOnLoad(function(){
+    require(["dojo/window"], function () {
         showLoading();
-        loadRestOfDojo();
+
+        require([
+            "dojo/ready",
+            "dijit/Dialog",
+            "dijit/dijit",
+            "dijit/form/Button",
+            "dijit/form/ComboBox",
+            "dijit/form/FilteringSelect",
+            "dijit/form/Form",
+            "dijit/form/Select",
+            "dijit/form/SimpleTextarea",
+            "dijit/form/Slider",
+            "dijit/form/TextBox",
+            "dijit/layout/_LayoutWidget",
+            "dijit/layout/BorderContainer",
+            "dijit/layout/ContentPane",
+            "dijit/layout/SplitContainer",
+            "dijit/layout/StackContainer",
+            "dojo/data/ItemFileReadStore",
+            "dojox/form/Uploader",
+            "dojox/widget/FeedPortlet",
+            "dojox/widget/Portlet",
+            "dojox/widget/rotator/Fade",
+            "dojox/form/Uploader",
+            "dojox/form/uploader/plugins/IFrame"
+            ], function (ready) {
+                ready(function () {
+                    hideLoading();
+
+                    runTest1();
+                });
+        });
     });
-
-    function loadRestOfDojo(){
-        dojo.require("dojox.widget.FeedPortlet");
-        dojo.require("dojox.widget.Portlet");
-
-        dojo.addOnLoad(onLoad);
-    }
 
     function showLoading(){
     }
@@ -172,12 +200,6 @@
     function hideLoading() {
         dojo.addClass("loading", "hidden");
         dojo.removeClass("mainDiv", "hidden");
-    }
-
-    function onLoad() {
-        hideLoading();
-
-        runTest1();
     }
 
     //------------------------------------------------------------------------------------------------------------------------//
@@ -243,9 +265,8 @@
         showTest(3, "Check that the site's configuration file can be read");
 
         try {
-            dojo.require("local.configuration.config");
-            dojo.addOnLoad(function(){
-                configData = new local.configuration.config();
+            require(["configuration/config"], function (Configuration) {
+                configData = new Configuration();
 
                 if(!configData) {
                     showResults(3, false);
