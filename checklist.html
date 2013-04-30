@@ -188,6 +188,7 @@
             ], function (ready) {
                 ready(function () {
                     hideLoading();
+                    showTest(0, "Checklist testing in progress...");
 
                     runTest1();
                 });
@@ -218,6 +219,7 @@
                     runTest2();
                 } else {
                     showResults(1, false);
+                    showOverallFailure();
                 }
             },
             error: function(text, xhr) {
@@ -257,6 +259,7 @@
                 // Unsupported data URL:  mismatch with <dataUrlPrefix>
                 // Proxy configuration not available
                 // Authentication failed
+                showOverallFailure();
             }
         });
     }
@@ -270,6 +273,7 @@
 
                 if(!configData) {
                     showResults(3, false);
+                    showOverallFailure();
                 } else {
                     showResults(3, true);
 
@@ -280,6 +284,7 @@
             showResults(3, false);
             showAddendum(3, err);
             showTip(3, "This error can also occur if the configuration file has a JavaScript error such as a missing commas, mismatching parentheses or brackets, or an unclosed text string.");
+            showOverallFailure();
         }
     }
 
@@ -287,8 +292,9 @@
         showTest(4, "Check that the account name can be read");
 
         var owner = configData.galleryOwner;
-        if(null === owner || 0 == owner.length || "yourEsriGlobalID" == owner) {
+        if(owner === null || owner.length === 0 || owner === "yourEsriGlobalID") {
             showResults(4, false);
+            showOverallFailure();
         } else {
             showResults(4, true);
 
@@ -306,10 +312,11 @@
             timeout: 30000,  // ms
             load: function(data) {
                 if(data && data.results) {
-                    if(0 == data.results.length)
+                    if(data.results.length === 0)
                     {
                         showResults(5, false);
                         showAddendum(5, "No groups were found for " + owner);
+                        showOverallFailure();
                     }
                     else
                     {
@@ -330,13 +337,16 @@
                 } else if(data && data.error && data.error.message) {
                     showResults(5, false);
                     showAddendum(5, data.error.message);
+                    showOverallFailure();
                 } else {
                     showResults(5, false);
+                    showOverallFailure();
                 }
             },
             error: function(text, xhr) {
                 showResults(5, false);
                 showAddendum(5, xhr.xhr.statusText);
+                showOverallFailure();
             }
         });
     }
@@ -345,8 +355,9 @@
         showTest(6, "Check that the group ID can be read");
 
         var groupId = configData.galleryGroupId;
-        if(null === groupId || 32 != groupId.length || "yourArcGIS.comGroupID" == groupId) {
+        if(groupId === null || groupId.length != 32 || groupId === "yourArcGIS.comGroupID") {
             showResults(6, false);
+            showOverallFailure();
         } else {
             showResults(6, true);
 
@@ -366,10 +377,11 @@
             timeout: 40000,  // ms
             load: function(data) {
                 if(data && data.results) {
-                    if(0 == data.results.length)
+                    if(data.results.length === 0)
                     {
                         showResults(7, false);
                         showAddendum(7, "No items were found for group " + groupId);
+                        showOverallFailure();
                     }
                     else
                     {
@@ -389,12 +401,15 @@
                 } else if(data && data.error && data.error.message) {
                     showResults(7, false);
                     showAddendum(7, data.error.message);
+                    showOverallFailure();
                 } else {
                     showResults(7, false);
+                    showOverallFailure();
                 }
             },
             error: function(text, xhr) {
                 showResults(7, false, xhr.xhr.statusText);
+                showOverallFailure();
             }
         });
     }
@@ -407,14 +422,16 @@
         var govtInternalVariableName = configData.govtInternalVariableName;
         var beginWithLetterPattern = /[a-z]/i;
         var containsWhitespacePattern = /\s/g;
-        if((govtDisplayName && 0 == govtDisplayName.length)
-           || null === govtFormalName || 0 == govtFormalName.length
-           || null === govtInternalVariableName || 0 == govtInternalVariableName.length) {
+        if((govtDisplayName && govtDisplayName.length === 0)
+           || govtFormalName === null || govtFormalName.length === 0
+           || govtInternalVariableName === null || govtInternalVariableName.length === 0) {
             showResults(8, false);
+            showOverallFailure();
         } else if(!beginWithLetterPattern.test(govtInternalVariableName.substr(0,1))
             || containsWhitespacePattern.test(govtInternalVariableName)) {
             showResults(8, false);
             showTip(8, "Insure that the govtInternalVariableName begins with a letter and only contains letters and digits");
+            showOverallFailure();
         } else {
             showResults(8, true);
             var content = "<ul>";
@@ -433,8 +450,9 @@
 
         var govtMainLabel = configData.govtMainLabel;
         var govtMainLink = configData.govtMainLink;
-        if(null === govtMainLabel || 0 == govtMainLabel.length || null === govtMainLink || 0 == govtMainLink.length) {
+        if(govtMainLabel === null || govtMainLabel.length === 0 || govtMainLink === null || govtMainLink.length === 0) {
             showResults(9, false);
+            showOverallFailure();
         } else {
             showResults(9, true);
             var content = "<ul>";
@@ -576,7 +594,8 @@
         showResults(14, ok);
         showAddendum(14, content);
 
-        if(ok) runTest15();
+        if (ok) runTest15();
+        else showOverallFailure();
     }
 
     function runTest15() {
@@ -586,7 +605,7 @@
 
         content = "<ol>";
         dojo.forEach(gallery, function(item){
-            if(0 == item.tags.length) {
+            if(item.tags.length === 0) {
                 ok = false;
                 content += "<li>" + item.title + " is missing its category and type</li>";
             } else if(2 != item.tags.length && 4 != item.tags.length) {
@@ -618,10 +637,10 @@
                     var sum = Number(item.tags[2]);
                     var count = Number(item.tags[3]);
                     if(isNaN(sum) || sum.toString() !== item.tags[2] || isNaN(count) || count.toString() !== item.tags[3]
-                        || (0 == count && 0 != sum) || 0 > count || 0 > sum) {
+                        || (count === 0 && sum !== 0) || count < 0 || sum < 0) {
                         ok = false;
                         content += "<li>" + emphasize("rating information is damaged; please delete everything after the category and type") + "</li>";
-                    } else if(0 == count) {
+                    } else if(count === 0) {
                         content += "<li>rating: <i>unrated</i></li>";
                     } else {
                         content += "<li>rating: " + (sum/count).toFixed(1) + " from "
@@ -638,7 +657,8 @@
         showResults(15, ok);
         showAddendum(15, content);
 
-        if(ok) runTest16();
+        if (ok) runTest16();
+        else showOverallFailure();
     }
 
     function runTest16() {
@@ -647,6 +667,7 @@
         if(!(configData.about && 0 < configData.about.length)) {
             showResults(16, false);
             showAddendum(16, "about must contain at least one category");
+            showOverallFailure();
         } else {
             var item = dojo.byId("aboutPlaceholder");
             if(item)
@@ -669,7 +690,7 @@
     function runTest17() {
         showTest(17, "Check the languages information");
 
-        if(null === configData.displayRules.alternateLanguages || 0 == configData.displayRules.alternateLanguages.length) {
+        if(!configData.displayRules.alternateLanguages || configData.displayRules.alternateLanguages === null || configData.displayRules.alternateLanguages.length === 0) {
             showResults(17, true);
             showAddendum(17, "No language translation has been configured for this site");
             runTest18();
@@ -688,6 +709,7 @@
                 runTest18();
             } else {
                 showResults(17, false);
+                showOverallFailure();
             }
         }
     }
@@ -705,11 +727,13 @@
                     runTest19();
                 } else {
                     showResults(18, false);
+                    showOverallFailure();
                 }
             },
             error: function(text, xhr) {
                 showResults(18, false);
                 showAddendum(18, xhr.xhr.statusText);
+                showOverallFailure();
             }
         });
     }
@@ -741,31 +765,37 @@
                             } else {
                                 showResults(19, false);
                                 dojo.byId("start19").innerHTML = emphasize("Unable to load startup background image");
+                                showOverallFailure();
                             }
                         });
                         dojo.connect(startImg, "onerror", function(err){
                             showResults(19, false);
                             dojo.byId("start19").innerHTML = emphasize("Unable to load startup background image");
+                            showOverallFailure();
                         });
 
                     } else {
                         showResults(19, false);
                         dojo.byId("home19").innerHTML = emphasize("Home banner image is not 108 pixels high");
+                        showOverallFailure();
                     }
                 });
                 dojo.connect(bannerImg, "onerror", function(err){
                     showResults(19, false);
                     dojo.byId("home19").innerHTML = emphasize("Unable to load home banner image");
+                    showOverallFailure();
                 });
 
             } else {
                 showResults(19, false);
                 dojo.byId("logo19").innerHTML = emphasize("Logo image is not 72 pixels high");
+                showOverallFailure();
             }
         });
         dojo.connect(logoImg, "onerror", function(err){
             showResults(19, false);
             dojo.byId("logo19").innerHTML = emphasize("Unable to load logo image");
+            showOverallFailure();
         });
     }
 
@@ -774,14 +804,20 @@
         showResults(0, true);
     }
 
+    function showOverallFailure() {
+        showTest(0, "Checklist testing did not complete");
+        showResults(0, false);
+    }
+
     //------------------------------------------------------------------------------------------------------------------------//
 
     function testNavigation(testNum, navigationField, resultsPlaceholder) {
         var ok = false;
-        if(!navigationField || null === navigationField.label || !navigationField.items) {
+        if(!navigationField || navigationField.label === null || !navigationField.items) {
             showResults(testNum, false);
             showTip(testNum, "Check that the label field is a string, even if empty");
             showTip(testNum, "Check that the items field is a list, even if empty");
+            showOverallFailure();
         } else {
             showResults(testNum, true);
             ok = true;
