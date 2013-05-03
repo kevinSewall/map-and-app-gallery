@@ -41,8 +41,9 @@ public class proxy : IHttpHandler
         ProxyConfig config = ProxyConfig.GetCurrentConfig();
         if(null == config)
         {
+            HttpRuntime.Cache.Remove("authentication");
             response.StatusCode = 500;
-            response.StatusDescription = "Proxy configuration not available";
+            response.StatusDescription = "Proxy configuration not available; token cache cleared";
             response.End();
             return;
         }

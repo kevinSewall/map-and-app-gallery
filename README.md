@@ -22,6 +22,16 @@ on the ArcGIS Resource Center can guide you in the setup and configuration of th
 ### General Help
 [New to Github? Get started here.](http://htmlpreview.github.com/?https://github.com/Esri/esri.github.com/blob/master/help/esri-getting-to-know-github.html)
 
+Before running the Gallery, we recommend that you run checklist.html. This page duplicates many of the steps that the Gallery
+does during its startup, but it provides diagnostic messages as it runs. It should complete and put a message at the top of the
+page saying "Checklist testing is complete".
+
+If you switch to a new gallery owner after having been running the Gallery, you may find that the Gallery does not change or
+does not have any items. Clear your browser cache and run checklist.html. If the checklist.html fails at step 3.5 with the
+message "No groups were found for...", then the proxy program has a cached authentication that needs to be cleared. Rename
+proxy.config to anything else and re-run checklist.html; it will fail at step 3.3 with the message "Proxy configuration not
+available; token cache cleared". Restore proxy.config's name and run the checklist again.
+
 ## Requirements
 
 ### Esri Sample Services
@@ -69,5 +79,5 @@ limitations under the License.
 A copy of the license is available in the repository's
 [license.txt](https://raw.github.com/Esri/map-and-app-gallery/master/license.txt) file.
 
-[](Esri Tags: Local Government Map App Gallery)
+[](Esri Tags: "Local Government" "Map Gallery" Local Government Map App Gallery)
 [](Esri Language: JavaScript)
