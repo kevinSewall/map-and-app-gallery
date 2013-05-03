@@ -144,12 +144,18 @@ public class proxy : IHttpHandler
         string dataURL = 1 < originalRequest.Url.Query.Length ? originalRequest.Url.Query.Substring(1) : "";
 
         // Check that the data URL matches the config file
-        if (!dataURL.ToLower().StartsWith(config.dataUrlPrefix.ToLower()))
+        string lowerDataURL = dataURL.ToLower();
+        if (!lowerDataURL.StartsWith(config.dataUrlPrefix.ToLower()))
         {
             response.StatusCode = 500;
             response.StatusDescription = "Unsupported data URL";
             response.End();
             return;
+        }
+        // Switch to SSL if desired by authentication response
+        else if (authSpec.ssl && 5 < lowerDataURL.Length && lowerDataURL.StartsWith("http:"))
+        {
+            dataURL = "https:" + dataURL.Substring(5);
         }
 
         // Create the proxied URL
