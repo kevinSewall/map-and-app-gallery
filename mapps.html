@@ -1168,18 +1168,8 @@ than shifting the page 40px off the bottom. -->
                 // Create the thumbnail for this item
                 var newRotatorThumbCell = dojo.create("td", {}, rotatorThumbs);
                 var thumbSrc = items[i].thumbnail ? "proxy.ashx?" + items[i].thumbnail : "graphics/missingThumbnail.png";
-                var newRotatorThumb = dojo.create("img",
-                    {
-                        src: thumbSrc,
-                        title: items[i].title
-                    },
-                    newRotatorThumbCell
-                );
-                newRotatorThumb.onerrorHandle = dojo.connect(newRotatorThumb, "onerror", function(err){
-                    var affectedImage = err.currentTarget;
-                    dojo.disconnect(affectedImage.onerrorHandle);
-                    affectedImage.src = "graphics/missingThumbnail.png";
-                });
+                var newRotatorThumb = createImage(items[i].title, thumbSrc, newRotatorThumbCell,
+                    "graphics/missingThumbnail.png");
                 mostRecentItems[i].thumbImg = newRotatorThumb;
 
                 newRotatorThumb.position = i;
@@ -1201,16 +1191,8 @@ than shifting the page 40px off the bottom. -->
 
                 // Create the large focus view for this item
                 var focusSrc = items[i].fullsize ? "proxy.ashx?" + items[i].fullsize : "graphics/missingThumbnail.png";
-                var rotatorFocusImg = dojo.create("img",
-                    {
-                        src: focusSrc,
-                        title: "More information about " + items[i].title
-                    }, rotatorFocusImgCell);
-                rotatorFocusImg.onerrorHandle = dojo.connect(rotatorFocusImg, "onerror", function(err){
-                    var affectedImage = err.currentTarget;
-                    dojo.disconnect(affectedImage.onerrorHandle);
-                    affectedImage.src = thumbSrc;
-                });
+                var rotatorFocusImg = createImage("More information about " + items[i].title, focusSrc,
+                    rotatorFocusImgCell, thumbSrc);
                 mostRecentItems[i].focusImg = rotatorFocusImg;
 
                 rotatorFocusImg.galleryItemId = items[i].id;
@@ -1238,6 +1220,23 @@ than shifting the page 40px off the bottom. -->
 
             dojo.addClass("homeHighlightsLoading", "absent");
         }
+    }
+
+    // Create an image with a fallback URL in case of error fetching the desired URL
+    function createImage(title, url, parent, fallbackUrl) {
+        var newImg = dojo.create("img",
+            {
+                title: title,
+                src: url
+            },
+            parent
+        );
+        newImg.onerrorHandle = dojo.connect(newImg, "onerror", function(err){
+            var affectedImage = err.currentTarget;
+            dojo.disconnect(affectedImage.onerrorHandle);
+            affectedImage.src = fallbackUrl;
+        });
+        return newImg;
     }
 
     var rotatorTimer = null;
