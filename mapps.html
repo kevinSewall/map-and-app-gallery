@@ -1577,9 +1577,11 @@ than shifting the page 40px off the bottom. -->
 
                                         // And post the result
                                         dojo.xhrPost({
-                                            url: "proxy.ashx?http://www.arcgis.com/sharing/content/users/" +
-                                                configData.galleryOwner + "/items/" + modifiedItemId +
-                                                "/update?f=json",
+                                            url: "proxy.ashx?http://www.arcgis.com/sharing/content/users/"
+                                                + configData.galleryOwner
+                                                + (data.ownerFolder? "/" + data.ownerFolder : "")
+                                                + "/items/" + modifiedItemId
+                                                + "/update?f=json",
                                             handleAs: "text",
                                             headers: {"X-Requested-With": ""},  // avoid conversion from POST to OPTION;
                                                                                 // cf http://trac.dojotoolkit.org/changeset/20403
