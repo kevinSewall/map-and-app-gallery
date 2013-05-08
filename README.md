@@ -47,7 +47,7 @@ available; token cache cleared". Restore proxy.config's name and run the checkli
 
 Learn more about Esri's [ArcGIS for Local Government maps and apps](http://resources.arcgis.com/en/communities/local-government/).
 
-Show me a list of other [Local Government GitHub repositories](http://esri.github.io/#Local%2DGovernment).
+Show me a list of other [Local Government GitHub repositories](http://esri.github.io/#Local-Government).
 
 Additional [information](http://www.arcgis.com/home/item.html?id=74f7dedcb89c4bc3b714226849509501)
 are available for the application.
