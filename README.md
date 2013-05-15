@@ -50,7 +50,7 @@ Learn more about Esri's [ArcGIS for Local Government maps and apps](http://resou
 Show me a list of other [Local Government GitHub repositories](http://esri.github.io/#Local-Government).
 
 Additional [information](http://www.arcgis.com/home/item.html?id=74f7dedcb89c4bc3b714226849509501)
-are available for the application.
+is available for the application.
 
 ## Issues
 
