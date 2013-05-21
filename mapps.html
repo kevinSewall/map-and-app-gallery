@@ -904,6 +904,9 @@ than shifting the page 40px off the bottom. -->
                     // from working on an iPad (http://bugs.dojotoolkit.org/ticket/13488)
                     dijit.byId("detailsDialog").draggable = false;
 
+                    // Make the gallery the initial page
+                    changeSubpage('Gallery', false);
+
                     // Show the site by hiding the loading background
                     configIndependentInitReady = true;
                     hideLoading();
