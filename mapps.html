@@ -607,15 +607,13 @@ than shifting the page 40px off the bottom. -->
     var currentType = null;
     var currentTerm = null;
     var currentDetailsId = null;
-    //var currentDetailsItem = null;//???
-    //var currentSumRatings = 0;    //???
-    //var currentNumRatings = 0;    //???
     var configDependentInitReady = false;
     var configIndependentInitReady = false;
     var mostRecentItems = new Array();
     var currentMostRecentItem = -1;
     var disableThumbnailUpload = true;
     var MapsAppsTileConstructor;
+    var queryParams;
 
     // Manage a "loading" indicator to hide dojo reworking of UI
     // We'll pull this part of dojo in quickly, then get the rest
@@ -654,6 +652,9 @@ than shifting the page 40px off the bottom. -->
                         || (dojo.isIE && (dojo.isIE < 9 || "x64" == window.navigator.cpuClass));
                     MapsAppsTileConstructor = MapsAppsTile;
 
+                    // Capture the query parameters into a structure
+                    queryParams = this.parseQueryString(window.location.search, true);
+
                     // Fetch the configuration information. We have two parallel tracks of initialization here:
                     // that which is dependent upon the config file and that which is independent
 
@@ -691,7 +692,24 @@ than shifting the page 40px off the bottom. -->
                                         showRecent(items, request);
 
                                         // Gallery page
-                                        updateGallery(null, null, null);
+                                        if(queryParams &&
+                                           (queryParams.category || queryParams.type || queryParams.search || queryParams.show)) {
+                                            // Make the gallery the initial page if we've a query
+                                            changeSubpage('Gallery', false);
+
+                                            // Update the gallery
+                                            updateGallery(
+                                                (queryParams.category ? unescape(queryParams.category) : null),
+                                                (queryParams.type ? unescape(queryParams.type) : null),
+                                                (queryParams.search ? unescape(queryParams.search) : null));
+
+                                            // Show the highlight item if supplied
+                                            if(queryParams.show) {
+                                                showDetailsDialog(queryParams.show);
+                                            }
+                                        } else {
+                                            updateGallery(null, null, null);
+                                        }
                                     }
                                 });
                             }
@@ -1289,9 +1307,8 @@ than shifting the page 40px off the bottom. -->
             changeSubpage('Gallery', false);
         }
 
-        // Update the current search term and the gallery
-        currentTerm = "" == newValue ? null : newValue;
-        updateGallery(currentCategory, currentType, currentTerm);
+        // Update the gallery
+        updateGallery(currentCategory, currentType, ("" == newValue ? null : newValue));
     }
 
     // Update the gallery tile display based on what category and type we prefer
@@ -1305,6 +1322,7 @@ than shifting the page 40px off the bottom. -->
         if("All Types" == type) type = null;
         currentCategory = category;
         currentType = type;
+        currentTerm = term;
 
         galleryData.fetch({
             query: {category: currentCategory, type: currentType, term: currentTerm},
@@ -1809,6 +1827,37 @@ than shifting the page 40px off the bottom. -->
             flattened += original.substring(iAfterCloseTag);
         }
         return flattened;
+    }
+
+    /**
+     * Parses a URL query string.
+     * @param {string} winLocSearch The query string to parse, e.g.,
+     *        window.location.search
+     * @param {boolean} [overwrite=false] Duplicate key-value pairs
+     *        replace earlier ones (true) or values get appended to
+     *        original key (false)
+     * @return {object} Key-value pairs of the query string
+     * @memberOf js.LGUIBuilder#
+     * @author st-boost
+     * href="http://codereview.stackexchange.com/a/10396/">
+     * http://codereview.stackexchange.com/a/10396</a>
+     */
+    function parseQueryString (winLocSearch, overwrite) {
+        // modified to take query string in as an argument to facilitate testing
+        // and added "overwrite" option
+        var query = (winLocSearch || "?").substr(1),
+            map   = {};
+        query.replace(/([^&=]+)=?([^&]*)(?:&+|$)/g, function (match, key, value) {
+            if (overwrite) {
+                map[key] = value;
+            } else {
+                // Modified original assignment for new JSLint rule
+                //(map[key] = map[key] || []).push(value);
+                map[key] = map[key] || [];
+                map[key].push(value);
+            }
+        });
+        return map;
     }
 </script>
 </body>
