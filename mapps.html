@@ -76,7 +76,7 @@ than shifting the page 40px off the bottom. -->
                 <div data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'top'">
                     <nav>
                         <div id="tabBarExpander" class="tabBarExpanded rounded">
-                            <div id="tabBar"><span title="Home" class="tabBarTitle" onclick="changeSubpage('Home',true)">Home</span><img src="graphics/separator.png" /><span title="Gallery" class="tabBarTitle" onclick="changeSubpage('Gallery',false)">Gallery</span><img src="graphics/separator.png" /><span title="Submit Your App" class="tabBarTitle" onclick="changeSubpage('SubmitApp',false)">Submit Your App</span><img src="graphics/separator.png" /><span title="About" class="tabBarTitle" onclick="changeSubpage('About',true)">About</span></div>
+                            <div id="tabBar"><span title="Home" class="tabBarTitle" onclick="changeSubpage('Home',true)">Home</span><img src="graphics/separator.png" /><span title="Gallery" class="tabBarTitle" onclick="changeSubpage('Gallery',false)">Gallery</span><img src="graphics/separator.png" /><span title="About" class="tabBarTitle" onclick="changeSubpage('About',true)">About</span></div>
                             <div id="tabBarExpandedImageFrame">
                                 <img id="tabBarExpandedImage" src="configuration/home_image.png" title="city view">
                             </div>
@@ -204,166 +204,6 @@ than shifting the page 40px off the bottom. -->
 
                         </div>
                     </div><!-- Gallery -->
-
-                    <!-- Submit Your App -->
-                    <div id="SubmitApp" data-dojo-type="dijit.layout.ContentPane"
-                        data-dojo-props="title:'Submit Your App'">
-                        <div class="subpage" data-dojo-type="dijit.layout.BorderContainer"
-                            data-dojo-props="design:'headline',gutters:false">
-                            <div class="fullHeight noPad" data-dojo-type="dijit.layout.SplitContainer"
-                                data-dojo-props="region:'center',orientation:'horizontal',splitter:'true'">
-
-                                <!-- Left column rules -->
-                                <div data-dojo-type="dijit.layout.ContentPane">
-                                    <div class="fullHeight noPad sideColumnBkgd rounded">
-                                        <div id="submissionLeftCol" class="absoluteContainer fullHeight noPad rounded">
-                                            <div id="submissionLeftColFrame" data-dojo-type="dijit.layout.ContentPane">
-                                                <div id="submissionLeftColTitle">Submit Your Application</div>
-
-                                                <div id="categories" class="submissionLeftColSubtitle">Submission Rules</div>
-                                                <div class="submissionLeftColContent">
-                                                    In order to be considered, each submission must include:
-                                                    <ol>
-                                                        <li>A link to the working software application</li>
-                                                        <li>A text-based description of the application</li>
-                                                        <li>A thumbnail image of the application</li>
-                                                    </ol>
-                                                </div>
-
-                                                <div id="types" class="submissionLeftColSubtitle">Additional Rules</div>
-                                                <div class="submissionLeftColContent">
-                                                    Submissions must also:
-                                                    <ol>
-                                                        <li>Be original software apps solely owned by the applicant</li>
-                                                        <li>Use at least one of the maps or datasets found in the Gallery</li>
-                                                        <li>Be free to the public, or have a clearly defined fee structure</li>
-                                                        <li>Recognize that the City reserves the right to restrict access to the Gallery</li>
-                                                    </ol>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div><!-- Left column rules -->
-
-                                <!-- Right column submission form -->
-                                <div data-dojo-type="dijit.layout.ContentPane">
-                                    <div class="columnPadLeft fullHeight noPad">
-                                        <div class="absoluteContainer fullHeight noPad">
-                                            <div id="submissionFormFrame" data-dojo-type="dijit.layout.ContentPane">
-                                                <div id="submissionFormNotAvailable" class="absent">
-                                                At this time, the submission of maps and apps from the Opera, 64-bit Internet Explorer, or Internet Explorer &lt;9 browsers is not available.
-                                                </div>
-                                                <form class="fullWidth" data-dojo-type="dijit.form.Form" id="submissionForm" jsId="submissionForm"
-                                                    enctype="multipart/form-data" method="post">
-                                                    <table id="submissionFormTable" cellspacing="10">
-                                                        <tr>
-                                                            <td>
-                                                                <label for="title">Application Name:</label>
-                                                            </td>
-                                                            <td>
-                                                                <input type="text" data-dojo-type="dijit.form.TextBox"
-                                                                    data-dojo-props="id:'title',name:'title',trim:true,required:true,intermediateChanges:true">
-                                                                </input>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <label for="accessInformation">Submitted By:</label>
-                                                            </td>
-                                                            <td>
-                                                                <input type="text" data-dojo-type="dijit.form.TextBox"
-                                                                    data-dojo-props="id:'accessInformation',name:'accessInformation',trim:true,required:true,intermediateChanges:true">
-                                                                </input>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <label for="description">Description:</label>
-                                                            </td>
-                                                            <td>
-                                                                <input type="text" data-dojo-type="dijit.form.SimpleTextarea"
-                                                                    data-dojo-props="id:'description',name:'description',trim:true,required:true,intermediateChanges:true">
-                                                                </input>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <label for="pcategory">Category:</label>
-                                                            </td>
-                                                            <td>
-                                                                <input id="pcategory">
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <label for="ptype">Type:</label>
-                                                            </td>
-                                                            <td>
-                                                                <input id="ptype">
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <label for="url">Try It URL:</label>
-                                                            </td>
-                                                            <td>
-                                                                <input type="text" data-dojo-type="dijit.form.TextBox"
-                                                                    data-dojo-props="id:'url',name:'url',trim:true,required:true,intermediateChanges:true">
-                                                                </input>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <label for="thumbnail">Thumbnail Image:</label>
-                                                            </td>
-                                                            <td>
-                                                                <input id="thumbnail" name="thumbnail" type="file"
-                                                                    data-dojo-type="dojox.form.Uploader" label="Select an image file..."
-                                                                    url="UploadFile.ashx"
-                                                                    multiple="false" uploadOnSelect="false" force="iframe" />
-                                                                <div id="uploadedfileEchoFrame">
-                                                                    <span id="uploadedfileEcho"></span>
-                                                                </div>
-                                                                <div id="uploadedfileHint">For best results, the image should be 200 pixels wide by 133 pixels high. Other sizes will be adjusted to fit. Acceptable image formats are: PNG, GIF and JPEG.</div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div id="uploadStatus" class="absoluteContainer">
-                                                                    <img id="uploadingActive" class="absoluteOrigin absent" src="graphics/uploadActive.gif">
-                                                                    <div id="uploadingSuccessful" class="absoluteOrigin absent">
-                                                                        <img class="absoluteOrigin" src="graphics/upload.png">
-                                                                        <img class="absoluteOrigin" src="graphics/ok.png">
-                                                                    </div>
-                                                                    <div id="uploadingFailed" class="absoluteOrigin absent">
-                                                                        <img class="absoluteOrigin" src="graphics/upload.png">
-                                                                        <img class="absoluteOrigin" src="graphics/fail.png">
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <input id="item" name="item" value="" type="hidden" data-dojo-type="dijit.form.TextBox"/>
-                                                                <input id="snippet" name="snippet" value="" type="hidden" data-dojo-type="dijit.form.TextBox"/>
-                                                                <input id="type" name="type" value="Web Mapping Application" type="hidden" data-dojo-type="dijit.form.TextBox"/>
-                                                                <input id="typeKeywords" name="typeKeywords" value="Ready To Use,Other" type="hidden" data-dojo-type="dijit.form.TextBox"/>
-                                                                <input id="tags" name="tags" value="" type="hidden" data-dojo-type="dijit.form.TextBox"/>
-                                                                <input id="licenseInfo" name="licenseInfo" type="hidden" data-dojo-type="dijit.form.TextBox"/>
-                                                                <input id="text" name="text" value="" type="hidden" data-dojo-type="dijit.form.TextBox"/>
-
-                                                                <button id="submitButton" value="Submit" type="submit" data-dojo-type="dijit.form.Button">Submit form</button>
-                                                                <button id="resetButton" data-dojo-type="dijit.form.Button" onclick="resetForm(true);">Reset form</button>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div><!-- Right column submission form -->
-
-                            </div>
-                        </div>
-                    </div><!-- Submit Your App -->
 
                     <!-- About -->
                     <div id="About" data-dojo-type="dijit.layout.ContentPane"
@@ -737,39 +577,6 @@ than shifting the page 40px off the bottom. -->
                         customizeLink("detailsFacebook", configData.govtFacebookLabel, configData.govtFacebookLink);
                         customizeLink("detailsTwitter", configData.govtTwitterLabel, configData.govtTwitterLink);
 
-
-                        var categorySelector =
-                            new dijit.form.FilteringSelect({
-                                id: "pcategory",
-                                store: new dojo.data.ItemFileReadStore({
-                                        data: configData.appCategories
-                                    }),
-                                searchAttr: "name",
-                                autoComplete: true,
-                                required: true,
-                                intermediateChanges: true,
-                                value: ""
-                            },
-                            "pcategory");
-                        dojo.connect(dijit.byId("pcategory"), "onChange", updateSubmitResetButtons);
-
-                        var typeSelector =
-                            new dijit.form.FilteringSelect({
-                                id: "ptype",
-                                store: new dojo.data.ItemFileReadStore({
-                                        data: configData.appTypes
-                                    }),
-                                searchAttr: "name",
-                                autoComplete: true,
-                                required: true,
-                                intermediateChanges: true,
-                                value: ""
-                            },
-                            "ptype");
-                        dojo.connect(dijit.byId("ptype"), "onChange", updateSubmitResetButtons);
-
-                        dijit.byId("licenseInfo").set("value", configData.govtFormalName);
-
                         addAbout("aboutFrame", configData.about);
 
                         addContactInfo("supportFrame", configData.supportContact);
@@ -785,73 +592,6 @@ than shifting the page 40px off the bottom. -->
                             script.type = "text/javascript";
                             document.getElementsByTagName("head")[0].appendChild(script);
                         }
-
-                        // Upload the image file when the form is submitted, then do the actual form submit
-                        dojo.connect(dijit.byId("thumbnail"), "onBegin", function(event) {
-                            // Try to block multiple submissions
-                            dijit.byId("submitButton").set("disabled", true);
-                            dijit.byId("resetButton").set("disabled", true);
-                        });
-
-                        dojo.connect(dijit.byId("thumbnail"), "onError", function(event) {
-                            dojo.style("uploadingActive", "display", "none");
-                            dojo.style("uploadingFailed", "display", "block");
-                            resetForm(false);
-                        });
-
-                        dojo.connect(dijit.byId("thumbnail"), "onComplete", function(event) {
-                            dojo.style("uploadStatus", "display", "block");
-                            dojo.style("uploadingActive", "display", "block");
-
-                            if(event && 0 < event.length && !event[0].error)
-                            {
-                                // Submit the rest of the form once we're done with uploading the image.
-                                // Have to do it like this for IE; Firefox, Chrome, & Safari can handle it in parallel
-                                prepareFormForSubmission(event[0].name);
-
-                                var urlSuffix = "";
-                                if(dojo.isIE)
-                                {
-                                    urlSuffix = "&unique=" + (new Date()).getTime();
-                                }
-
-                                // The parameters to pass to xhrPost, the form, how to handle it, and the callbacks.
-                                var xhrArgs = {
-                                    form: dojo.byId("submissionForm"),
-                                    url: "proxy.ashx?http://www.arcgis.com/sharing/content/users/" +
-                                        configData.galleryOwner + "/addItem?f=json",
-                                    handleAs: "text",
-                                    accept: ["image/png","image/jpeg","image/gif"],
-                                    headers: {"X-Requested-With": ""},  // avoid conversion from POST to OPTION; cf http://trac.dojotoolkit.org/changeset/20403
-                                    load: function(data) {
-                                        data = JSON.parse(data);
-                                        if(data.success)
-                                        {
-                                            dojo.style("uploadingActive", "display", "none");
-                                            dojo.style("uploadingSuccessful", "display", "block");
-                                        }
-                                        else
-                                        {
-                                            dojo.style("uploadingActive", "display", "none");
-                                            dojo.style("uploadingFailed", "display", "block");
-                                        }
-                                    },
-                                    error: function(error) {
-                                        dojo.style("uploadingActive", "display", "none");
-                                        dojo.style("uploadingFailed", "display", "block");
-                                    }
-                                }
-                                // Call the asynchronous xhrPost
-                                var deferred = dojo.xhrPost(xhrArgs);
-                            }
-                            else
-                            {
-                                dojo.style("uploadingActive", "display", "none");
-                                dojo.style("uploadingFailed", "display", "block");
-                            }
-
-                            resetForm(false);
-                        });
 
                         // Show the site by hiding the loading background
                         configDependentInitReady = true;
@@ -880,25 +620,6 @@ than shifting the page 40px off the bottom. -->
                     dojo.connect(dijit.byId("detailsDialogRatingSlider"), "onChange", function(newValue) {
                         dojo.byId("detailsDialogRatingImg").src = "graphics/rating" + newValue + ".png";
                     });
-
-                    // Set initial conditions in submit form
-                    if(disableThumbnailUpload)
-                    {
-                        dojo.addClass("submissionForm", "absent");
-                        dojo.removeClass("submissionFormNotAvailable", "absent");
-                    }
-
-                    // Update the image file name after a selection of an image file
-                    dojo.connect(dijit.byId("thumbnail"), "onChange", function(event) {
-                        dojo.byId("uploadedfileEcho").innerHTML = event && 0 < event.length ? encodeURIComponent(event[0].name) : "";
-                        updateSubmitResetButtons();
-                    });
-
-                    dojo.connect(dijit.byId("title"), "onChange", updateSubmitResetButtons);
-                    dojo.connect(dijit.byId("accessInformation"), "onChange", updateSubmitResetButtons);
-                    dojo.connect(dijit.byId("description"), "onChange", updateSubmitResetButtons);
-                    dojo.connect(dijit.byId("url"), "onChange", updateSubmitResetButtons);
-                    updateSubmitResetButtons();
 
                     // Prevent the details dialog from being dragged to get around a bug that prevents the close button
                     // from working on an iPad (http://bugs.dojotoolkit.org/ticket/13488)
@@ -1068,72 +789,6 @@ than shifting the page 40px off the bottom. -->
                 translateOptions["includedLanguages"] = configData.displayRules.alternateLanguages;
             }
             new google.translate.TranslateElement(translateOptions, 'google_translate_element');
-        }
-    }
-
-    function updateSubmitResetButtons()
-    {
-        var itemIsEmpty = true;
-        var formIsEmpty = true;
-        var formIsFull = true;
-        var item;
-
-        itemIsEmpty = 0 == dijit.byId("title").value.length;
-        formIsEmpty = formIsEmpty && itemIsEmpty;
-        formIsFull = formIsFull && !itemIsEmpty;
-
-        itemIsEmpty = 0 == dijit.byId("accessInformation").value.length;
-        formIsEmpty = formIsEmpty && itemIsEmpty;
-        formIsFull = formIsFull && !itemIsEmpty;
-
-        itemIsEmpty = 0 == dijit.byId("description").value.length;
-        formIsEmpty = formIsEmpty && itemIsEmpty;
-        formIsFull = formIsFull && !itemIsEmpty;
-
-        itemIsEmpty = true;
-        item = dijit.byId("pcategory");
-        if(item) itemIsEmpty = 0 == item.value.length;
-        formIsEmpty = formIsEmpty && itemIsEmpty;
-        formIsFull = formIsFull && !itemIsEmpty;
-
-        itemIsEmpty = true;
-        item = dijit.byId("ptype");
-        if(item) itemIsEmpty = 0 == item.value.length;
-        formIsEmpty = formIsEmpty && itemIsEmpty;
-        formIsFull = formIsFull && !itemIsEmpty;
-
-        itemIsEmpty = 0 == dijit.byId("url").value.length;
-        formIsEmpty = formIsEmpty && itemIsEmpty;
-        formIsFull = formIsFull && !itemIsEmpty;
-
-        if(!disableThumbnailUpload)
-        {
-            itemIsEmpty = 0 == dojo.byId("uploadedfileEcho").innerHTML.length;
-            formIsEmpty = formIsEmpty && itemIsEmpty;
-            formIsFull = formIsFull && !itemIsEmpty;
-        }
-
-        dijit.byId("submitButton").set("disabled", !formIsFull);
-        dijit.byId("resetButton").set("disabled", formIsEmpty);
-
-        if(!formIsEmpty)
-        {
-            dojo.style("uploadStatus", "display", "none");
-            dojo.style("uploadingActive", "display", "none");
-            dojo.style("uploadingSuccessful", "display", "none");
-            dojo.style("uploadingFailed", "display", "none");
-        }
-    }
-
-    function resetForm(askFirst)
-    {
-        if(!askFirst || confirm('Press OK to clear the form'))
-        {
-            dijit.byId("submissionForm").reset();
-            dijit.byId("thumbnail").reset();
-            dojo.byId("uploadedfileEcho").innerHTML = "";
-
-            updateSubmitResetButtons();
         }
     }
 
@@ -1741,25 +1396,6 @@ than shifting the page 40px off the bottom. -->
         }
         dijit.byId('contentPages').layout();
         handleResize();
-    }
-
-    function prepareFormForSubmission(thumbnailImageFilename)
-    {
-        // Make a unique name for this item using a city-supplied base name
-        document.getElementById("item").value = configData.govtInternalVariableName + (new Date()).getTime();
-
-        // Generate our tags based on the combination of the Category and Type
-        var category = document.getElementById("pcategory").value;
-        var type = document.getElementById("ptype").value;
-        document.getElementById("tags").value = category + "," + type;
-
-        // The snippet is simply a shortened form of the description
-        document.getElementById("snippet").value = ellipsify(document.getElementById("description").value, 120);
-
-        // Add the thumbnail image's filename to the end of the description
-        document.getElementById("description").value += " [thumbnail filename:" + thumbnailImageFilename + "]";
-
-        return true;
     }
 
     function ellipsify(original, maxLength) {

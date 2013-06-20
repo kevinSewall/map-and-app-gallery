@@ -149,7 +149,7 @@ a:visited {
     color: #fff;
     font-size: 18px;
     text-align: center;
-    width: 24.8%;  /* Divide tab bar into 4 parts, but must be a bit less than 25% because of the separator widths */
+    width: 32.8%;  /* Divide tab bar into 3 parts, but must be a bit less than 33% because of the separator widths */
 }
 
 /* Home page */
