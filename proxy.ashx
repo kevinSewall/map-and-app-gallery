@@ -211,7 +211,30 @@ public class proxy : IHttpHandler
         // Set up the response to the client
         if (serverResponse != null)
         {
-            response.ContentType = serverResponse.ContentType;
+            bool hasContentDisposition = false;
+            for(int i=0; i < serverResponse.Headers.Count; ++i)
+            {
+                string key = serverResponse.Headers.Keys[i].ToString();
+                if ("Content-Disposition" == key || "Content-Type" == key || "Date" == key ||
+                    "ETag" == key || "Last-Modified" == key)
+                {
+                    hasContentDisposition |= "Content-Disposition" == key;
+                    response.AppendHeader(key, serverResponse.Headers[i].ToString());
+                }
+            }
+            if (!hasContentDisposition)
+            {
+                int iFile = dataURL.IndexOf("file=");
+                if (0 <= iFile)
+                {
+                    iFile += 5;
+                    int iFile2 = dataURL.IndexOf("&", iFile);
+                    if (0 > iFile2) iFile2 = dataURL.Length;
+                    string filename = dataURL.Substring(iFile, iFile2 - iFile);
+                    response.AppendHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+                }
+            }
+
             try
             {
                 using (Stream byteStream = serverResponse.GetResponseStream())

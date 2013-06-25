@@ -668,7 +668,8 @@ than shifting the page 40px off the bottom. -->
 
                         // Create the gallery data store
                         galleryData = new ArcGISSearchStore({
-                            groupId: configData.galleryGroupId
+                            groupId: configData.galleryGroupId,
+                            webmapViewer: configData.webmapViewerUrl
                         });
 
                         // Get the gallery data. We'll chain the three calls (for the Most Popular & Most Recent
@@ -1167,7 +1168,7 @@ than shifting the page 40px off the bottom. -->
 
                 // Create the thumbnail for this item
                 var newRotatorThumbCell = dojo.create("td", {}, rotatorThumbs);
-                var thumbSrc = items[i].thumbnail ? "proxy.ashx?" + items[i].thumbnail : "graphics/missingThumbnail.png";
+                var thumbSrc = items[i].thumbnail;
                 var newRotatorThumb = createImage(items[i].title, thumbSrc, newRotatorThumbCell,
                     "graphics/missingThumbnail.png");
                 mostRecentItems[i].thumbImg = newRotatorThumb;
@@ -1190,8 +1191,7 @@ than shifting the page 40px off the bottom. -->
                 });
 
                 // Create the large focus view for this item
-                var focusSrc = items[i].fullsize ? "proxy.ashx?" + items[i].fullsize : "graphics/missingThumbnail.png";
-                var rotatorFocusImg = createImage("More information about " + items[i].title, focusSrc,
+                var rotatorFocusImg = createImage("More information about " + items[i].title, items[i].fullsize,
                     rotatorFocusImgCell, thumbSrc);
                 mostRecentItems[i].focusImg = rotatorFocusImg;
 
@@ -1355,21 +1355,7 @@ than shifting the page 40px off the bottom. -->
                         }
                         if(ok)
                         {
-                            // If the tile does not have a url, see if it is a web map
-                            if(!galleryItem.url && "Web Map" == galleryItem.type)
-                            {
-                                if(configData && configData.webmapViewerUrl)
-                                {
-                                    galleryItem.url = configData.webmapViewerUrl + galleryItem.id;
-                                }
-                                else
-                                {
-                                    galleryItem.url = "http://www.arcgis.com/home/webmap/viewer.html?webmap=" + galleryItem.id;
-                                }
-                            }
-
                             // Create the tile
-                            var thumbSrc = galleryItem.thumbnail ? "proxy.ashx?" + galleryItem.thumbnail : "graphics/missingThumbnail.png";
                             var mapapptile = new MapsAppsTileConstructor({
                                 id: galleryItem.id,
                                 titleLine: galleryItem.title,
@@ -1377,7 +1363,7 @@ than shifting the page 40px off the bottom. -->
                                 shortDesc: galleryItem.snippet,
                                 readMoreOnClickHandler: "showDetailsDialog",
                                 tryItURL: galleryItem.url,
-                                thumbnailURL: thumbSrc
+                                thumbnailURL: galleryItem.thumbnail
                             });
                             gallery.addChild(mapapptile);
                             ++numMapsAndApps;
@@ -1542,7 +1528,7 @@ than shifting the page 40px off the bottom. -->
                 }
                 dojo.byId("detailsDialogSubmittedBy").innerHTML = galleryItem.accessInformation;
                 dojo.byId("detailsDialogTitle").innerHTML = galleryItem.title;
-                dojo.byId("detailsDialogImage").src = "proxy.ashx?" + galleryItem.thumbnail;
+                dojo.byId("detailsDialogImage").src = galleryItem.thumbnail;
                 dojo.byId("detailsDialogDescription").innerHTML = galleryItem.description;
 
                 var detailsRightColTryItLink = dojo.byId("detailsRightColTryItLink");

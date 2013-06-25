@@ -17,16 +17,28 @@
 define(["dojo/_base/declare", "dojo/store/util/SimpleQueryEngine"], function (declare, SimpleQueryEngine) {
     return declare(null, {
         _groupId: "",
+        _webmapViewer: null,
         _amendedResults: null,
 
         /**
          * Constructs the ArcGISSearchStore object.
          * @param {string} args.groupId The id of the arcgis.com group
          *        whose data are to be used for the store
+         * @param {string} args.webmapViewer The URL of the viewer that
+         *        can be used to display webmaps, e.g.,
+         *        "http://www.arcgis.com/home/webmap/viewer.html?webmap="
+         *        "http://explorer.arcgis.com/?open="
          */
         constructor: function (args) {
-            if (args && args.groupId) {
-                this._groupId = args.groupId;
+            if (args) {
+                if (args.groupId) {
+                    this._groupId = args.groupId;
+                }
+                if (args.webmapViewer) {
+                    this._webmapViewer = args.webmapViewer;
+                } else {
+                    this._webMapViewer = "http://www.arcgis.com/home/webmap/viewer.html?webmap=";
+                }
             }
         },
 
@@ -92,20 +104,34 @@ define(["dojo/_base/declare", "dojo/store/util/SimpleQueryEngine"], function (de
          */
         _amendResults: function(data){
             // Default to empty store
-            var items = [];
+            var pThis = this, items = [];
+
             if(data.results){
                 items = data.results;
 
                 dojo.forEach(items, function(item) {
+                    // Get the URLs to the thumbnail and its original image
                     var imageFilename = item["thumbnail"];
                     if(imageFilename) {
-                        item["thumbnail"] = "http://www.arcgis.com/sharing/content/items/" + item["id"] + "/info/" + imageFilename;
+                        item["thumbnail"] = "proxy.ashx?" + "http://www.arcgis.com/sharing/content/items/" + item["id"] + "/info/" + imageFilename;
                         var filenamePieces = imageFilename.split(".");
                         imageFilename = filenamePieces[0] + "_orig." + filenamePieces[1];
-                        item["fullsize"] = "http://www.arcgis.com/sharing/content/items/" + item["id"] + "/info/" + imageFilename;
+                        item["fullsize"] = "proxy.ashx?" + "http://www.arcgis.com/sharing/content/items/" + item["id"] + "/info/" + imageFilename;
                     } else {
-                        item["thumbnail"] = null;
-                        item["fullsize"] = null;
+                        item["thumbnail"] = "graphics/missingThumbnail.png";
+                        item["fullsize"] = "graphics/missingThumbnail.png";
+                    }
+
+                    // If the item does not have a URL, see if it is a web map or use the /data part of the item for the URL
+                    if(!item.url) {
+                        if (item.type === "Web Map") {
+                            item.url = pThis._webmapViewer + item.id;
+                        } else {
+                            item.url = "proxy.ashx?" + "http://www.arcgis.com/sharing/content/items/" + item["id"] + "/data";
+                            if (item.itemType && item.itemType === "file") {
+                                item.url += "?file=" + item.item;
+                            }
+                        }
                     }
                 });
             }
