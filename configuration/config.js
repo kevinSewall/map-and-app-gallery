@@ -1,4 +1,6 @@
-﻿/** @license
+﻿/*global define */
+/*jslint sloppy:true */
+/** @license
  | Version 10.2
  | Copyright 2012 Esri
  |
