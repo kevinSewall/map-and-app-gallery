@@ -31,6 +31,7 @@ using System.Web.Caching;
 /// </summary>
 public class proxy : IHttpHandler
 {
+    const bool cShowAuthXHeaders = false;
 
     public void ProcessRequest (HttpContext context)
     {
@@ -49,9 +50,12 @@ public class proxy : IHttpHandler
         }
 
         // Can we get the authentication spec from the cache?
+        bool usedCache = true;
+        string authExpiration = "";
         AuthenticationSpec authSpec = HttpRuntime.Cache["authentication"] as AuthenticationSpec;
         if (authSpec == null)
         {
+            usedCache = false;
             // No spec available--we'll have to generate one
 
             // Post the authentication request
@@ -108,6 +112,7 @@ public class proxy : IHttpHandler
             {
                 DateTime expiresDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(authSpec.expires);
                 HttpRuntime.Cache.Insert("authentication", authSpec, null, expiresDate, Cache.NoSlidingExpiration);
+                authExpiration = expiresDate.ToShortDateString() + " " + expiresDate.ToShortTimeString() + " UTC";
             }
             else
             {
@@ -116,6 +121,11 @@ public class proxy : IHttpHandler
                 response.End();
                 return;
             }
+        }
+        else
+        {
+            DateTime expiresDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(authSpec.expires);
+            authExpiration = expiresDate.ToShortDateString() + " " + expiresDate.ToShortTimeString() + " UTC";
         }
 
 
@@ -211,6 +221,15 @@ public class proxy : IHttpHandler
         // Set up the response to the client
         if (serverResponse != null)
         {
+            // Add cache diagnostic headers if desired
+            if(cShowAuthXHeaders)
+            {
+                DateTime utcNow = DateTime.UtcNow;
+                response.Headers["X-UTCNow"] = utcNow.ToShortDateString() + " " + utcNow.ToShortTimeString() + " UTC";
+                response.Headers["X-FromCache"] = usedCache.ToString();
+                response.Headers["X-AuthExpiration"] = authExpiration;
+            }
+
             bool hasContentDisposition = false;
             for(int i=0; i < serverResponse.Headers.Count; ++i)
             {
