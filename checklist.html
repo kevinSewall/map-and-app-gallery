@@ -213,7 +213,7 @@
             handleAs: "text",
             timeout: 10000,  // ms
             load: function(data) {
-                if(data && "OK" == data) {
+                if(data && data === "OK") {
                     showResults(1, true);
 
                     runTest2();
@@ -239,7 +239,7 @@
             handleAs: "json",
             timeout: 30000,  // ms
             load: function(data) {
-                if(data && data.id && data.id == id) {
+                if(data && data.id && data.id === id) {
                     showResults(2, true);
 
                     runTest3();
@@ -529,15 +529,15 @@
             ok = false;
             showAddendum(14, "appCategories structure is missing");
         }
-        if(ok && !(configData.appCategories.identifier && "name" == configData.appCategories.identifier)) {
+        if(ok && !(configData.appCategories.identifier && configData.appCategories.identifier === "name")) {
             ok = false;
             showAddendum(14, "appCategories.identifier must be set to \"name\"");
         }
-        if(ok && !(configData.appCategories.label && "name" == configData.appCategories.label)) {
+        if(ok && !(configData.appCategories.label && configData.appCategories.label === "name")) {
             ok = false;
             showAddendum(14, "appCategories.label must be set to \"name\"");
         }
-        if(ok && !(configData.appCategories.items && 0 < configData.appCategories.items.length)) {
+        if(ok && !(configData.appCategories.items && configData.appCategories.items.length > 0)) {
             ok = false;
             showAddendum(14, "appCategories.items must contain at least one category");
         }
@@ -561,15 +561,15 @@
             ok = false;
             showAddendum(14, "appTypes structure is missing");
         }
-        if(ok && !(configData.appTypes.identifier && "name" == configData.appTypes.identifier)) {
+        if(ok && !(configData.appTypes.identifier && configData.appTypes.identifier === "name")) {
             ok = false;
             showAddendum(14, "appTypes.identifier must be set to \"name\"");
         }
-        if(ok && !(configData.appTypes.label && "name" == configData.appTypes.label)) {
+        if(ok && !(configData.appTypes.label && configData.appTypes.label === "name")) {
             ok = false;
             showAddendum(14, "appTypes.label must be set to \"name\"");
         }
-        if(ok && !(configData.appTypes.items && 0 < configData.appTypes.items.length)) {
+        if(ok && !(configData.appTypes.items && configData.appTypes.items.length > 0)) {
             ok = false;
             showAddendum(14, "appTypes.items must contain at least one category");
         }
@@ -633,7 +633,7 @@
                 }
                 content += "</li>";
 
-                if(4 == item.tags.length) {
+                if(item.tags.length === 4) {
                     var sum = Number(item.tags[2]);
                     var count = Number(item.tags[3]);
                     if(isNaN(sum) || sum.toString() !== item.tags[2] || isNaN(count) || count.toString() !== item.tags[3]
@@ -722,7 +722,7 @@
             handleAs: "text",
             timeout: 10000,  // ms
             load: function(data) {
-                if(data && "OK" == data) {
+                if(data && data === "OK") {
                     showResults(18, true);
                     runTest19();
                 } else {
@@ -751,11 +751,11 @@
 
         var logoImg = dojo.create("img", {src:"configuration/logo.png"}, "logo19");
         dojo.connect(logoImg, "onload", function(loadedLogo){
-            if(loadedLogo && 72 == loadedLogo.currentTarget.height) {
+            if(loadedLogo && loadedLogo.currentTarget.naturalHeight === 72) {
 
                 var bannerImg = dojo.create("img", {src:"configuration/home_image.png"}, "home19");
                 dojo.connect(bannerImg, "onload", function(loadedBanner){
-                    if(loadedBanner && 108 == loadedBanner.currentTarget.height) {
+                    if(loadedBanner && loadedBanner.currentTarget.naturalHeight === 108) {
 
                         var startImg = dojo.create("img", {src:"configuration/startup_background.png"}, "start19");
                         dojo.connect(startImg, "onload", function(loadedStart){
